@@ -421,7 +421,6 @@ def cli(tasks, disable_verbose, answer, check, debug):
         pytest_args = [*pytest_args_common, "--tb=no"]
 
     # запуск pytest
-    print("#"*50, tasks)
     if tasks == "all":
         pytest.main(pytest_args, plugins=[json_plugin])
     elif type(tasks) == dict: # 25_db
