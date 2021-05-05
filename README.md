@@ -16,7 +16,7 @@
 ## Полезные ссылки
 
 * [Как работать с git и github](https://pyneng.github.io/docs/git-github-course/)
-* [Установка и подготовка к работе с ptest](https://pyneng.github.io/docs/ptest-prepare/)
-* [Как проверять задания, смотреть варианты решения и сдавать на проверку](https://pyneng.github.io/docs/ptest/)
+* [Установка и подготовка к работе с pyneng](https://pyneng.github.io/docs/pyneng-prepare/)
+* [Как проверять задания, смотреть варианты решения и сдавать на проверку](https://pyneng.github.io/docs/pyneng/)
 
 
