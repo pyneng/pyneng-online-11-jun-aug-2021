@@ -40,6 +40,13 @@ task_dirs = [
     "23_oop_special_methods",
     "24_oop_inheritance",
     "25_db",
+    "task_25_1",
+    "task_25_2",
+    "task_25_3",
+    "task_25_4",
+    "task_25_5",
+    "task_25_5a",
+    "task_25_6",
 ]
 
 
@@ -91,8 +98,11 @@ class CustomTasksType(click.ParamType):
                 )
             )
 
-        current_chapter = current_chapter_id()
         tasks_list = re.split(r"[ ,]+", value)
+        if "25" in current_chapter:
+            return {25: tasks_list}
+
+        current_chapter = current_chapter_id()
         test_files = []
         for task in tasks_list:
             match = re.fullmatch(regex, task)
@@ -195,7 +205,37 @@ def send_tasks_to_check(passed_tasks):
         if "20" in task or "21" in task:
             call_command("git add templates")
     call_command(f'git commit -m "{message}"')
-    call_command("git push origin master")
+    call_command("git push origin main")
+
+    git_remote = call_command("git remote -v", return_stdout=True)
+    repo_match = re.search(r"online-\d+-\w+-\w+", git_remote)
+    if repo_match:
+        repo = repo_match.group()
+    else:
+        raise PynengError(red(
+            "Не найден репозиторий online-11-имя-фамилия. "
+            "pyneng надо вызывать в репозитории подготовленном для курса."
+        ))
+    post_comment_to_last_commit(message, repo)
+
+
+def dummy_send_tasks_to_check(tasks):
+    """
+    Функция делает
+    git add .
+    git commit
+    git push
+    для добавления изменений на Github.
+    В коммит добавляются всеефайлы в текущем каталоге.
+
+    После этого к этому коммиту добавляется сообщение о том,
+    что задания сдаются на проверку с помощью функции post_comment_to_last_commit.
+    """
+    message = f"Сделаны задания 25 {' '.join(tasks)}"
+
+    call_command(f"git add .")
+    call_command(f'git commit -m "{message}"')
+    call_command("git push origin main")
 
     git_remote = call_command("git remote -v", return_stdout=True)
     repo_match = re.search(r"online-\d+-\w+-\w+", git_remote)
@@ -359,6 +399,11 @@ def cli(tasks, disable_verbose, answer, check, debug):
     Для сдачи заданий на проверку надо сгенерировать токен github.
     Подробнее в инструкции: https://pyneng.github.io/docs/pyneng-prepare/
     """
+    token_error = red(
+        "Для сдачи заданий на проверку надо сгенерировать токен github. "
+        "Подробнее в инструкции: https://pyneng.github.io/docs/pyneng-prepare/"
+    )
+
     if not debug:
         sys.excepthook = exception_handler
 
@@ -376,30 +421,43 @@ def cli(tasks, disable_verbose, answer, check, debug):
         pytest_args = [*pytest_args_common, "--tb=no"]
 
     # запуск pytest
+    print("#"*50, tasks)
     if tasks == "all":
         pytest.main(pytest_args, plugins=[json_plugin])
+    elif type(tasks) == dict: # 25_db
+        print(green("Для заданий 25го раздела нет тестов"))
     else:
         pytest.main(tasks + pytest_args, plugins=[json_plugin])
 
-    # получить результаты pytest в формате JSON
-    passed_tasks = parse_json_report(json_plugin.report)
-
-    if passed_tasks:
-        # скопировать ответы в файлы answer_task_x.py
+    # для заданий 25го раздела делается глупое добавление всех файлов
+    if type(tasks) == dict: # 25_db
         if answer:
-            copy_answers(passed_tasks)
-
-        # сдать задания на проверку через github API
+            raise PynengError(
+                red(
+                    "Задания 25_db без автоматических ответов. Проверка выполняется "
+                    "вручную и вместе с проверкой выкладываются ответы"
+                )
+            )
         if check:
             token = os.environ.get("GITHUB_TOKEN")
             if not token:
-                raise PynengError(
-                    red(
-                        "Для сдачи заданий на проверку надо сгенерировать токен github. "
-                        "Подробнее в инструкции: https://pyneng.github.io/docs/pyneng-prepare/"
-                    )
-                )
-            send_tasks_to_check(passed_tasks)
+                raise PynengError(token_error)
+            dummy_send_tasks_to_check(tasks[25])
+    else:
+        # получить результаты pytest в формате JSON
+        passed_tasks = parse_json_report(json_plugin.report)
+
+        if passed_tasks:
+            # скопировать ответы в файлы answer_task_x.py
+            if answer:
+                copy_answers(passed_tasks)
+
+            # сдать задания на проверку через github API
+            if check:
+                token = os.environ.get("GITHUB_TOKEN")
+                if not token:
+                    raise PynengError(token_error)
+                send_tasks_to_check(passed_tasks)
 
 
 if __name__ == "__main__":
