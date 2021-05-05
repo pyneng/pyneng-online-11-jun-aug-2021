@@ -1,0 +1,17 @@
+Value Filldown local_host (\S+)
+Value Required remote_host (\S+)
+Value remote_ip (\S+)
+Value remote_platform (.+)
+Value local_intf (\S+)
+Value remote_intf (\S+)
+
+Start
+ ^${local_host}[>#]
+ ^Device ID: ${remote_host}
+ ^Entry address\(es\): -> Address
+ ^Platform: ${remote_platform},
+ ^Interface: ${local_intf}, .+: ${remote_intf}
+ ^-+ -> Record
+
+Address
+ ^ +IP address: ${remote_ip}

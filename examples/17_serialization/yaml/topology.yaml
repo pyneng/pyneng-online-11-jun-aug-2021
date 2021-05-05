@@ -1,0 +1,45 @@
+? &id002 !!python/tuple
+- R1
+- Eth0/0
+: &id001 !!python/tuple
+- SW1
+- Eth0/1
+? &id004 !!python/tuple
+- R2
+- Eth0/0
+: &id003 !!python/tuple
+- SW1
+- Eth0/2
+? !!python/tuple
+- R2
+- Eth0/1
+: !!python/tuple
+- SW2
+- Eth0/11
+? &id006 !!python/tuple
+- R3
+- Eth0/0
+: &id005 !!python/tuple
+- SW1
+- Eth0/3
+? !!python/tuple
+- R3
+- Eth0/1
+: !!python/tuple
+- R4
+- Eth0/0
+? !!python/tuple
+- R3
+- Eth0/2
+: !!python/tuple
+- R5
+- Eth0/0
+*id001: *id002
+*id003: *id004
+*id005: *id006
+? !!python/tuple
+- SW1
+- Eth0/5
+: !!python/tuple
+- R6
+- Eth0/1

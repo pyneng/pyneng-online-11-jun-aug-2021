@@ -1,0 +1,12 @@
+R1#sh ip int br
+Interface            IP-Address      OK? Method Status            Protocol
+Ethernet0/0          192.168.100.1   YES NVRAM  up                up
+Ethernet0/1          192.168.200.1   YES NVRAM  up                up
+Ethernet0/2          unassigned      YES NVRAM  up                up
+Ethernet0/3          192.168.130.1   YES NVRAM  up                up
+Loopback22           10.2.2.2        YES NVRAM  up                up
+Loopback33           unassigned      YES unset  up                up
+Loopback55           5.5.5.5         YES NVRAM  up                up
+Loopback100          10.1.1.100      YES manual up                up
+Loopback123          123.1.2.3       YES NVRAM  up                up
+

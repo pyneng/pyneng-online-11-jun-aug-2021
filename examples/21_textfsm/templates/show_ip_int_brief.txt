@@ -1,0 +1,7 @@
+Value interface (\S+)
+Value address (\S+)
+Value status (up|down|adminitratively down)
+Value protocol (up|down)
+
+Start
+ ^${interface} +${address} +\w+ +\w+ +${status} +${protocol}$$ -> Record

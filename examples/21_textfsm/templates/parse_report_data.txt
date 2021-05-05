@@ -1,0 +1,16 @@
+Value report_person ((\S+ +)*\S+)
+Value citizenship ((\S+ +)*\S+)
+
+Start
+ ^.+NAMES OF REPORTING PERSONS -> Person
+ ^.+CITIZENSHIP OR PLACE OF ORGANIZATION -> Citizenship
+ ^NUMBER OF -> Record
+
+
+Person
+ ^ +${report_person}
+ ^-+ -> Start
+
+Citizenship
+ ^ +${citizenship}
+ ^-+ -> Start

@@ -1,0 +1,9 @@
+Value Filldown prefix (\S+)
+Value ad (\d+)
+Value metric (\d+)
+Value Required nhop (\S+)
+
+Start
+ ^O +${prefix} +\[${ad}/${metric}\] via ${nhop}, -> Record
+ ^ +\[${ad}/${metric}\] via ${nhop}, -> Record
+
