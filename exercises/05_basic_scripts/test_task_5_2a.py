@@ -81,3 +81,34 @@ def test_task_10_1_1_193_28(capsys, monkeypatch):
     ), "Выведено неправильное значение маски"
 
 
+def test_task_172_16_100_237_29(capsys, monkeypatch):
+    """
+    Проверка работы задания при вводе 172.16.100.237/29
+    """
+    monkeypatch.setattr("builtins.input", lambda x=None: "172.16.100.237/29")
+    if sys.modules.get("task_5_2a"):
+        reload(sys.modules["task_5_2a"])
+    import task_5_2a
+
+    out, err = capsys.readouterr()
+    stdout = unified_columns_output(out.strip())
+    correct_stdout_network = unified_columns_output(
+        "172       16        100       232\n"
+        "10101100  00010000  01100100  11101000"
+    )
+
+    correct_stdout_mask = unified_columns_output(
+        "/29\n"
+        "255       255       255       248\n"
+        "11111111  11111111  11111111  11111000"
+    )
+
+    assert (
+        out
+    ), "Ничего не выведено на стандартный поток вывода. Надо не только получить нужный результат, но и вывести его на стандартный поток вывода с помощью print"
+    assert (
+        correct_stdout_network in stdout
+    ), "Выведено неправильное значение сети"
+    assert (
+        correct_stdout_mask in stdout
+    ), "Выведено неправильное значение маски"
