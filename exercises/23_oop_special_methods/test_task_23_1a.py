@@ -38,5 +38,5 @@ def test_repr_method():
     """Проверяем __repr__"""
     ip1 = task_23_1a.IPAddress("10.5.5.5/24")
     assert (
-        repr(ip1) == "IPAddress('10.5.5.5/24')"
+        repr(ip1).replace('"', "'") == "IPAddress('10.5.5.5/24')"
     ), "Метод __repr__ должен возвращать IPAddress('10.5.5.5/24')"
