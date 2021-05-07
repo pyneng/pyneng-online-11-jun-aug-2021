@@ -38,7 +38,7 @@ def test_errors_ignore_false(first_router_from_devices_yaml, command, error):
     r1 = task_24_2d.MyNetmiko(**first_router_from_devices_yaml)
     with pytest.raises(Exception) as excinfo:
         return_value = r1.send_config_set(command, ignore_errors=False)
-        r1.disconnect()
+    r1.disconnect()
     assert error in str(
         excinfo
     ), "Метод send_config_commands должен генерировать исключение, когда ignore_errors=False"
