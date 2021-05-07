@@ -43,6 +43,9 @@ def test_function_return_value():
     assert (
         type(return_value) == dict
     ), f"По заданию функция должна возвращать словарь, а возвращает {type(return_value).__name__}"
+    assert len(return_value) == len(
+        correct_return_value
+    ), "В словаре, который описывает топологию есть дублирующиеся линки"
     assert (
         unify_topology_dict(return_value) == correct_return_value
     ), "Функция возвращает неправильное значение"
