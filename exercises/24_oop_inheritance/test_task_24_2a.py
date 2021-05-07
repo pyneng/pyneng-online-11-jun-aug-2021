@@ -38,7 +38,7 @@ def test_errors(first_router_from_devices_yaml, command, error):
     r1 = task_24_2a.MyNetmiko(**first_router_from_devices_yaml)
     with pytest.raises(task_24_2a.ErrorInCommand) as excinfo:
         return_value = r1.send_command(command)
-        r1.disconnect()
+    r1.disconnect()
     assert error in str(
         excinfo
     ), "Метод send_config_commands должен генерировать исключение, когда команда выполнена с ошибкой"
