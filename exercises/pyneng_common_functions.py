@@ -12,6 +12,11 @@ stdout_incorrect_warning = """
 А выведено: {}
 """
 
+def unified_columns_output(output):
+    lines = [re.split(r"  +", line.strip()) for line in output.strip().split("\n")]
+    formatted = [("{:25}"*len(line)).format(*line) for line in lines]
+    return "\n".join(formatted)
+
 
 def check_attr_or_method(obj, attr=None, method=None):
     if attr:
