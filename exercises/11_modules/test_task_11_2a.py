@@ -65,12 +65,12 @@ def test_function_return_value():
     assert (
         type(return_value) == dict
     ), f"По заданию функция должна возвращать словарь, а возвращает {type(return_value).__name__}"
-    assert len(return_value) == len(
-        correct_return_value
+    assert len(correct_return_value) == len(
+        return_value
     ), "В словаре, который описывает топологию есть дублирующиеся линки"
     unified_return_value = unify_topology_dict(return_value)
     assert (
-        unified_return_value == correct_return_value
+        correct_return_value == unified_return_value
     ), "Функция возвращает неправильное значение"
 
 
@@ -96,10 +96,10 @@ def test_function_return_value_different_args():
     assert (
         type(return_value) == dict
     ), f"По заданию функция должна возвращать словарь, а возвращает {type(return_value).__name__}"
-    assert len(return_value) == len(
-        correct_return_value
+    assert len(correct_return_value) == len(
+        return_value
     ), "В словаре, который описывает топологию есть дублирующиеся линки"
     unified_return_value = unify_topology_dict(return_value)
     assert (
-        unified_return_value == correct_return_value
+        correct_return_value == unified_return_value
     ), "Функция возвращает неправильное значение"
