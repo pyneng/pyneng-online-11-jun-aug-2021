@@ -13,9 +13,19 @@ stdout_incorrect_warning = """
 """
 
 def unified_columns_output(output):
+    output = delete_empty_lines(output)
     lines = [re.split(r"  +", line.strip()) for line in output.strip().split("\n")]
     formatted = [("{:25}"*len(line)).format(*line) for line in lines]
     return "\n".join(formatted)
+
+
+def delete_empty_lines(output):
+    output = output.replace("\r\n", "\n")
+    lines = []
+    for line in output.strip().split("\n"):
+        if line.strip():
+            lines.append(line.rstrip())
+    return "\n".join(lines)
 
 
 def check_attr_or_method(obj, attr=None, method=None):
