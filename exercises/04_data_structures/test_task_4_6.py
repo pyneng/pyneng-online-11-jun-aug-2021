@@ -32,5 +32,5 @@ def test_task_stdout(capsys):
         out
     ), "Ничего не выведено на стандартный поток вывода. Надо не только получить нужный результат, но и вывести его на стандартный поток вывода с помощью print"
     assert (
-        correct_result == unified_columns_output(out.strip())
+        correct_stdout == unified_columns_output(out.strip())
     ), "На стандартный поток вывода выводится неправильная строка"
