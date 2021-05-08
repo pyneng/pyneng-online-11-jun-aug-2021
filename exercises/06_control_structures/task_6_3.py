@@ -16,7 +16,7 @@
 * ['del', '17'] - команда switchport trunk allowed vlan remove 17
 * ['only', '11', '30'] - команда switchport trunk allowed vlan 11,30
 
-Задача для портов 0/1, 0/2, 0/4:
+Задача для портов 0/1, 0/2, 0/4, 0/5, 0/7:
 - сгенерировать конфигурацию на основе шаблона trunk_template
 - с учетом ключевых слов add, del, only
 
@@ -48,6 +48,8 @@ interface FastEthernet0/7
 
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
+На стандартный поток вывода надо выводить только команды trunk настройки,
+а access закомментировать.
 """
 
 access_template = [
@@ -72,11 +74,11 @@ trunk = {
     "0/7": ["only", "30"],
 }
 
-for intf, vlan in access.items():
-    print("interface FastEthernet" + intf)
-    for command in access_template:
-        if command.endswith("access vlan"):
-            print(f" {command} {vlan}")
-        else:
-            print(f" {command}")
+# for intf, vlan in access.items():
+#     print("interface FastEthernet" + intf)
+#     for command in access_template:
+#         if command.endswith("access vlan"):
+#             print(f" {command} {vlan}")
+#         else:
+#             print(f" {command}")
 
