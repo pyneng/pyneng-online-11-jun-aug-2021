@@ -30,7 +30,7 @@ def test_class_inheritance(first_router_from_devices_yaml):
     "error,command",
     [
         ("Invalid input detected", "sh ip br"),
-        ("Incomplete command", "logging"),
+        ("Incomplete command", "copy"),
         ("Ambiguous command", "a"),
     ],
 )
