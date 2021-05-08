@@ -1,10 +1,6 @@
+import sys
 import re
 import pytest
-import sys
-
-sys.path.append("..")
-
-from pyneng_common_functions import unified_columns_output
 
 
 # Проверка что тест вызван через pytest ..., а не python ...
@@ -12,6 +8,12 @@ from _pytest.assertion.rewrite import AssertionRewritingHook
 
 if not isinstance(__loader__, AssertionRewritingHook):
     print(f"Тесты нужно вызывать используя такое выражение:\npytest {__file__}\n\n")
+
+
+def unified_columns_output(output):
+    lines = sorted([re.split(r"  +", line.strip()) for line in output.strip().split("\n")])
+    formatted = [("{:25}" * len(line)).format(*line) for line in lines]
+    return "\n".join(formatted)
 
 
 @pytest.mark.parametrize(

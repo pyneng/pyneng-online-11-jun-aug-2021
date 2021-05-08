@@ -3,6 +3,7 @@ from functools import wraps
 import pytest
 import sys
 
+sys.path.append("..")
 
 from pyneng_common_functions import unified_columns_output
 
