@@ -90,7 +90,9 @@ class CustomTasksType(click.ParamType):
         )
         current_chapter = current_dir_name()
         if current_chapter not in task_dirs:
-            task_dirs_line = "\n    ".join(task_dirs)
+            task_dirs_line = "\n    ".join(
+                [d for d in task_dirs if not d.startswith("task")]
+            )
             self.fail(
                 red(
                     f"\nСкрипт нужно вызывать из каталогов с заданиями:"
@@ -172,9 +174,9 @@ def post_comment_to_last_commit(msg, repo, delta_days=14):
         g = github.Github(token)
         repo_obj = g.get_repo(repo_name)
     except github.GithubException:
-        raise PynengError(red(
-            "Аутентификация по токену не прошла. Задание не сдано на проверку"
-        ))
+        raise PynengError(
+            red("Аутентификация по токену не прошла. Задание не сдано на проверку")
+        )
     else:
         commits = repo_obj.get_commits(since=since)
 
@@ -196,7 +198,9 @@ def send_tasks_to_check(passed_tasks):
     что задания сдаются на проверку с помощью функции post_comment_to_last_commit.
     """
     ok_tasks = [test.replace("test_", "") for test in passed_tasks]
-    tasks_num_only = sorted([task.replace("task_", "").replace(".py", "") for task in ok_tasks])
+    tasks_num_only = sorted(
+        [task.replace("task_", "").replace(".py", "") for task in ok_tasks]
+    )
     message = f"Сделаны задания {' '.join(tasks_num_only)}"
 
     for task in ok_tasks:
@@ -212,10 +216,12 @@ def send_tasks_to_check(passed_tasks):
     if repo_match:
         repo = repo_match.group()
     else:
-        raise PynengError(red(
-            "Не найден репозиторий online-11-имя-фамилия. "
-            "pyneng надо вызывать в репозитории подготовленном для курса."
-        ))
+        raise PynengError(
+            red(
+                "Не найден репозиторий online-11-имя-фамилия. "
+                "pyneng надо вызывать в репозитории подготовленном для курса."
+            )
+        )
     post_comment_to_last_commit(message, repo)
 
 
@@ -242,10 +248,12 @@ def dummy_send_tasks_to_check(tasks):
     if repo_match:
         repo = repo_match.group()
     else:
-        raise PynengError(red(
-            "Не найден репозиторий online-11-имя-фамилия. "
-            "pyneng надо вызывать в репозитории подготовленном для курса."
-        ))
+        raise PynengError(
+            red(
+                "Не найден репозиторий online-11-имя-фамилия. "
+                "pyneng надо вызывать в репозитории подготовленном для курса."
+            )
+        )
     post_comment_to_last_commit(message, repo)
 
 
@@ -297,7 +305,8 @@ def copy_answers(passed_tasks):
     os.chdir(homedir)
     returncode, stderr = call_command(
         "git clone --depth=1 https://github.com/natenka/pyneng-answers",
-        verbose=False, return_stderr=True,
+        verbose=False,
+        return_stderr=True,
     )
     if returncode == 0:
         os.chdir(f"pyneng-answers/answers/{current_chapter_name}")
@@ -312,9 +321,11 @@ def copy_answers(passed_tasks):
         shutil.rmtree("pyneng-answers", onerror=remove_readonly)
     else:
         if "could not resolve host" in stderr.lower():
-            raise PynengError(red(
-                "Не получилось скопировать ответы. Возможно нет доступа в интернет?"
-            ))
+            raise PynengError(
+                red(
+                    "Не получилось скопировать ответы. Возможно нет доступа в интернет?"
+                )
+            )
         else:
             raise PynengError(red(f"Не получилось скопировать ответы. {stderr}"))
     os.chdir(pth)
@@ -423,13 +434,13 @@ def cli(tasks, disable_verbose, answer, check, debug):
     # запуск pytest
     if tasks == "all":
         pytest.main(pytest_args, plugins=[json_plugin])
-    elif type(tasks) == dict: # 25_db
+    elif type(tasks) == dict:  # 25_db
         print(green("Для заданий 25го раздела нет тестов"))
     else:
         pytest.main(tasks + pytest_args, plugins=[json_plugin])
 
     # для заданий 25го раздела делается глупое добавление всех файлов
-    if type(tasks) == dict: # 25_db
+    if type(tasks) == dict:  # 25_db
         if answer:
             raise PynengError(
                 red(
