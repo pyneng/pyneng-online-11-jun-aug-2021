@@ -7,6 +7,7 @@ import re
 import os
 from jinja2 import Environment, FileSystemLoader
 import yaml
+import textfsm
 
 
 stdout_incorrect_warning = """
@@ -122,3 +123,11 @@ def render_jinja_template(template, data_dict):
     )
     templ = env.get_template(templ_file)
     return templ.render(data_dict)
+
+
+def get_textfsm_output(template, command_output):
+    with open(template) as tmpl:
+        parser = textfsm.TextFSM(tmpl)
+        header = parser.header
+        result = parser.ParseText(command_output)
+    return [header] + result
