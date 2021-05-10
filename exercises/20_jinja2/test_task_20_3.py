@@ -1,11 +1,10 @@
 import os
 import pytest
-import task_20_1
 import sys
 
 sys.path.append("..")
 
-from pyneng_common_functions import check_function_exists, strip_empty_lines
+from pyneng_common_functions import check_function_exists, strip_empty_lines, render_jinja_template
 
 # Проверка что тест вызван через pytest ..., а не python ...
 from _pytest.assertion.rewrite import AssertionRewritingHook
@@ -54,10 +53,42 @@ def test_function_return_value():
         "router_id": "10.0.0.1",
     }
 
-    return_value = task_20_1.generate_config(template, data)
+    return_value = render_jinja_template(template, data)
     correct_lines = set(correct_return_value.splitlines())
-
     return_value = strip_empty_lines(return_value)
     return_lines = set(return_value.splitlines())
 
-    assert return_lines == correct_lines, "В итоговой конфигурации ospf не все строки"
+    assert correct_lines == return_lines, "В итоговой конфигурации ospf не все строки"
+
+
+def test_function_different_input():
+    correct_return_value = (
+        "router ospf 1\n"
+        "router-id 10.0.0.1\n"
+        "auto-cost reference-bandwidth 30000\n"
+        "network 10.55.1.1 0.0.0.0 area 0\n"
+        "network 10.55.2.1 0.0.0.0 area 5\n"
+        "network 10.55.3.1 0.0.0.0 area 5\n"
+        "passive-interface Fa0/1.100\n"
+        "passive-interface Fa0/1.200\n"
+        "passive-interface Fa0/1.300\n"
+    )
+
+    template = "templates/ospf.txt"
+    data = {
+        "ospf_intf": [
+            {"area": 0, "ip": "10.55.1.1", "name": "Fa0/1.100", "passive": True},
+            {"area": 5, "ip": "10.55.2.1", "name": "Fa0/1.200", "passive": True},
+            {"area": 5, "ip": "10.55.3.1", "name": "Fa0/1.300", "passive": True},
+        ],
+        "process": 1,
+        "ref_bw": 30000,
+        "router_id": "10.0.0.1",
+    }
+
+    return_value = render_jinja_template(template, data)
+    correct_lines = set(correct_return_value.splitlines())
+    return_value = strip_empty_lines(return_value)
+    return_lines = set(return_value.splitlines())
+
+    assert correct_lines == return_lines, "В итоговой конфигурации ospf не все строки"

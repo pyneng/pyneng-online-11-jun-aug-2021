@@ -4,6 +4,9 @@ from platform import system as system_name
 from subprocess import run, PIPE
 from concurrent.futures import ThreadPoolExecutor
 import re
+import os
+from jinja2 import Environment, FileSystemLoader
+import yaml
 
 
 stdout_incorrect_warning = """
@@ -111,3 +114,11 @@ def unify_topology_dict(topology_dict):
     }
     return unified_topology_dict
 
+
+def render_jinja_template(template, data_dict):
+    templ_dir, templ_file = os.path.split(template)
+    env = Environment(
+        loader=FileSystemLoader(templ_dir), trim_blocks=True, lstrip_blocks=True
+    )
+    templ = env.get_template(templ_file)
+    return templ.render(data_dict)
