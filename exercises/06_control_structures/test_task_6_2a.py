@@ -26,7 +26,7 @@ def test_task_correct_ip(capsys, monkeypatch, ip_add, ip_type):
     """
     monkeypatch.setattr("builtins.input", lambda x=None: ip_add)
     if sys.modules.get("task_6_2a"):
-        reload(sys.modules["task_6_2a"])
+        del sys.modules["task_6_2a"]
     import task_6_2a
 
     out, err = capsys.readouterr()
@@ -56,7 +56,7 @@ def test_task_wrong_ip(capsys, monkeypatch, ip_add, ip_type):
     """
     monkeypatch.setattr("builtins.input", lambda x=None: ip_add)
     if sys.modules.get("task_6_2a"):
-        reload(sys.modules["task_6_2a"])
+        del sys.modules["task_6_2a"]
     import task_6_2a
 
     out, err = capsys.readouterr()
