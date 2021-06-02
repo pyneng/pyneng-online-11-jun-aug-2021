@@ -36,6 +36,11 @@ def test_class_inheritance(first_router_from_devices_yaml):
 )
 def test_errors(first_router_from_devices_yaml, command, error):
     ssh = task_24_2a.MyNetmiko(**first_router_from_devices_yaml)
+    output = ssh.send_command("sh run | i hostname")
+    assert (
+        "hostname" in output
+    ), "При создании экземпляра класса должно создаваться подключение и переход в режим enable"
+
     with pytest.raises(task_24_2a.ErrorInCommand) as excinfo:
         return_value = ssh.send_command(command)
     ssh.disconnect()
