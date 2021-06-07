@@ -13,6 +13,8 @@ setup(
         "requests",
         "PyGithub",
         "six",
+        "jinja2",
+        "textfsm",
     ],
     entry_points="""
         [console_scripts]
