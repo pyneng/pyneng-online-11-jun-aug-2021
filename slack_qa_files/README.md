@@ -31,6 +31,24 @@ IndexError                                Traceback (most recent call last)
 IndexError: pop index out of range
 ```
 
+## Отличие sys.stdout и print
+
+Разница между print и sys.stdout в том, что print это красивая и простая оболочка вокруг sys.stdout.
+С print вместо:
+
+```python
+import sys
+sys.stdout.write("test")
+```
+
+можно писать
+```python
+print("test")
+```
+
+Плюс в print можно передавать что угодно, в sys.stdout только строку.
+И в print есть мелкие параметры для управления тем что поставится между элементами, что в конце вывода и так далее.
+
 
 ## Почему список/словарь в который собираются данные в функции, надо создавать внутри функции
 
