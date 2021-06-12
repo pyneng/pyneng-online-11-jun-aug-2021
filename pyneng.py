@@ -419,7 +419,7 @@ def cli(tasks, disable_verbose, answer, check, debug):
         sys.excepthook = exception_handler
 
     json_plugin = JSONReport()
-    pytest_args_common = ["--json-report-file=none", "--disable-warnings", "--no-hints"]
+    pytest_args_common = ["--json-report-file=none", "--disable-warnings"]
 
     if disable_verbose:
         pytest_args = [*pytest_args_common, "--tb=short"]
