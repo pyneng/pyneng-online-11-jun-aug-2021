@@ -3,6 +3,34 @@
 * [Вопросы pyneng-9](https://github.com/pyneng/pyneng-online-9-may-aug-2020/tree/master/slack_qa_files)
 * [Вопросы pyneng-10](https://github.com/pyneng/pyneng-online-10-jan-apr-2021/tree/main/slack_qa_files)
 
+## Можно ли сделать паровозик из методов list.pop?
+
+Можно сделать паровозик, но только в определенных условиях. pop работает только на списках (технически и на словарях).
+
+То есть можно сделать паровоз с pop если у нас список списков
+```python
+In [112]: data = [[1, 100, 1000], [2, 2, 2], [1, 2, 3], [4, 100, 3]]
+
+In [113]: data.pop()
+Out[113]: [4, 100, 3]
+
+In [114]: data.pop().pop()
+Out[114]: 3
+
+In [115]: data.pop(1).pop(2)
+Out[115]: 2
+```
+
+но еще один pop не сработает потому что это уже число
+```python
+In [116]: data.pop(1).pop(2).pop(1)
+---------------------------------------------------------------------------
+IndexError                                Traceback (most recent call last)
+<ipython-input-116-0659e6e22071> in <module>
+----> 1 data.pop(1).pop(2).pop(1)
+IndexError: pop index out of range
+```
+
 
 ## Почему список/словарь в который собираются данные в функции, надо создавать внутри функции
 
