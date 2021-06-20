@@ -1,15 +1,20 @@
 from pprint import pprint
 
-ip_dict = {}
+result_dict = {}
 
-with open("sh_ip_int_br.txt") as f:
+with open("sh_ip_int_br.txt", "r") as f:
     for line in f:
-        columns = line.split()
-        # print(columns)
-        if columns and columns[0][-1].isdigit():
-            intf = columns[0]
-            ip = columns[1]
-            ip_dict[intf] = ip
+        line_list = line.split()
+        if line_list and line_list[0][-1].isdigit():
+            intf = line_list[0]
+            ip = line_list[1]
+            if ip == "unassigned":
+                ip = None
+            result_dict[intf] = ip
 
+pprint(result_dict)
 
-pprint(ip_dict)
+# Просмотр данных
+for intf, ip in result_dict.items():
+    if not ip:
+        print(intf)
