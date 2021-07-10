@@ -6,7 +6,7 @@ no service timestamps debug uptime
 no service timestamps log uptime
 no service password-encryption
 !
-hostname PE_r1
+hostname r3
 !
 boot-start-marker
 boot-end-marker
@@ -48,32 +48,17 @@ xconnect logging redundancy
 !
 !
 interface Loopback0
- ip address 10.1.1.1 255.255.255.255
-!
-interface Tunnel0
- ip unnumbered Loopback0
- tunnel mode mpls traffic-eng
- tunnel destination 10.2.2.2
- tunnel mpls traffic-eng priority 7 7
- tunnel mpls traffic-eng bandwidth 5000
- tunnel mpls traffic-eng path-option 10 dynamic
- no routing dynamic
+ ip address 10.3.3.3 255.255.255.255
 !
 interface Ethernet0/0
- description To PE_r3 Ethernet0/0
+ description To PE_r1 Ethernet0/0
  bandwidth 100000
- ip address 10.0.13.1 255.255.255.0
+ ip address 10.0.13.3 255.255.255.0
  mpls traffic-eng tunnels
  ip rsvp bandwidth 100000 10000
 !
 interface Ethernet0/1
  no ip address
-!
-interface Ethernet0/2
- description To P_r9 Ethernet0/2
- ip address 10.0.19.1 255.255.255.0
- mpls traffic-eng tunnels
- ip rsvp bandwidth
 !
 interface Ethernet0/3
  description To sw1 Ethernet0/3

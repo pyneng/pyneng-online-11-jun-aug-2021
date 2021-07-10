@@ -6,7 +6,7 @@ no service timestamps debug uptime
 no service timestamps log uptime
 no service password-encryption
 !
-hostname PE_r1
+hostname PE_r2
 !
 boot-start-marker
 boot-end-marker
@@ -48,12 +48,12 @@ xconnect logging redundancy
 !
 !
 interface Loopback0
- ip address 10.1.1.1 255.255.255.255
+ ip address 10.2.2.2 255.255.255.255
 !
 interface Tunnel0
  ip unnumbered Loopback0
  tunnel mode mpls traffic-eng
- tunnel destination 10.2.2.2
+ tunnel destination 10.1.1.1
  tunnel mpls traffic-eng priority 7 7
  tunnel mpls traffic-eng bandwidth 5000
  tunnel mpls traffic-eng path-option 10 dynamic
@@ -62,16 +62,16 @@ interface Tunnel0
 interface Ethernet0/0
  description To PE_r3 Ethernet0/0
  bandwidth 100000
- ip address 10.0.13.1 255.255.255.0
+ ip address 10.0.23.2 255.255.255.0
  mpls traffic-eng tunnels
  ip rsvp bandwidth 100000 10000
 !
 interface Ethernet0/1
- no ip address
+ ip address 10.255.2.2 255.255.255.0
 !
 interface Ethernet0/2
  description To P_r9 Ethernet0/2
- ip address 10.0.19.1 255.255.255.0
+ ip address 10.0.29.2 255.255.255.0
  mpls traffic-eng tunnels
  ip rsvp bandwidth
 !
@@ -81,7 +81,7 @@ interface Ethernet0/3
 !
 interface Ethernet0/3.100
  encapsulation dot1Q 100
- xconnect 10.2.2.2 12100 encapsulation mpls
+ xconnect 10.1.1.1 12100 encapsulation mpls
   backup peer 10.4.4.4 14100
   backup delay 1 1
 !
@@ -98,14 +98,14 @@ router ospf 1
 router bgp 100
  bgp log-neighbor-changes
  bgp bestpath igp-metric ignore
- neighbor 10.2.2.2 remote-as 100
- neighbor 10.2.2.2 update-source Loopback0
- neighbor 10.2.2.2 next-hop-self
+ neighbor 10.1.1.1 remote-as 100
+ neighbor 10.1.1.1 update-source Loopback0
+ neighbor 10.1.1.1 next-hop-self
  neighbor 10.4.4.4 remote-as 40
  !
  address-family vpnv4
-  neighbor 10.2.2.2 activate
-  neighbor 10.2.2.2 send-community both
+  neighbor 10.1.1.1 activate
+  neighbor 10.1.1.1 send-community both
   exit-address-family
 !
 ip forward-protocol nd
@@ -113,7 +113,7 @@ ip forward-protocol nd
 !
 no ip http server
 no ip http secure-server
-ip route 10.2.2.2 255.255.255.255 Tunnel0
+ip route 10.1.1.1 255.255.255.255 Tunnel0
 !
 ip access-list standard LDP
  deny   10.0.0.0 0.0.255.255
@@ -163,3 +163,4 @@ event manager applet update-int-desc
  action 7.0 cli command "exit"
 !
 end
+
