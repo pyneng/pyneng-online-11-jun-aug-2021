@@ -8,7 +8,7 @@ setup(
         "Click",
         "pyyaml",
         "pytest",
-        "pytest-clarity",
+        "pytest-clarity==0.3.0a0",
         "pytest-json-report",
         "requests",
         "PyGithub",
