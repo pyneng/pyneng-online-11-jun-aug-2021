@@ -3,16 +3,18 @@ from pprint import pprint
 
 
 def parse_cdp(output):
-    regex= (
-        r"Device ID: (?P<device>\S+)\n"
-        r".*\n"
-        r" +IP address: (?P<ip>\S+)\n"
-        r"Platform: (?P<platform>.+?),.*\n"
-        r"(?:.*\n)+?"
-        r"Cisco IOS Software, (?P<ios>.+),"
+    regex = (
+        r"Device ID: (?P<device>\S+)"
+        r".*?"
+        r"IP address: (?P<ip>\S+)\s+"
+        r"Platform: (?P<platform>.+?),"
+        r".*?"
+        r"^Cisco IOS Software, (?P<ios>.+?), RELEASE"
     )
     result = {}
-    m_all = re.finditer(regex, output)
+    m_all = re.finditer(
+        regex, output, re.DOTALL | re.MULTILINE | re.ASCII
+    )
     for m in m_all:
         m_dict = m.groupdict()
         device = m_dict.pop("device")
