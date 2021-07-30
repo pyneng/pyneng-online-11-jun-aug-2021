@@ -1,0 +1,25 @@
+configuration:
+  interfaces:
+    interface:
+    - '@':
+        protect: true
+      name: ge-0/0/0
+      unit:
+      - family:
+          inet:
+            address:
+            - name: 198.51.100.1/24
+        name: 0
+ospf-neighbor-information:
+- activity-timer: '38'
+  interface-name: ge-0/0/1.1
+  neighbor-address: 192.168.1.1
+  neighbor-id: 10.0.0.2
+  neighbor-priority: '128'
+  ospf-neighbor-state: Full
+- activity-timer: '35'
+  interface-name: ge-0/0/1.4
+  neighbor-address: 192.168.4.1
+  neighbor-id: 10.0.0.4
+  neighbor-priority: '128'
+  ospf-neighbor-state: Full
