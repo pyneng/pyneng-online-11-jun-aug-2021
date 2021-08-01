@@ -45,10 +45,10 @@ def read_until_prompt(ssh, prompt, pause=0.2, max_read=60000):
     ssh.settimeout(5)
     while True:
         time.sleep(pause)
-            try:
-                part = ssh.recv(max_read).decode("utf-8")
-            except socket.timeout:
-                break
+        try:
+            part = ssh.recv(max_read).decode("utf-8")
+        except socket.timeout:
+            break
         command_output += part
         if prompt in part:
             break

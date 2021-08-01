@@ -34,13 +34,13 @@ def cisco_send_show_command(
         output = ""
         ssh.settimeout(5)
         while True:
+            time.sleep(pause)
             try:
-                time.sleep(pause)
                 part = ssh.recv(max_read).decode("utf-8")
-                output += part
-                if prompt in part:
-                    break
             except socket.timeout:
+                break
+            output += part
+            if prompt in part:
                 break
         return output
 
