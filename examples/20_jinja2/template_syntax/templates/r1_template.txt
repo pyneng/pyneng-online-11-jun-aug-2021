@@ -1,0 +1,16 @@
+{% extends "base_router.txt" %}
+
+{% block alias %}
+alias exec c conf t
+{% endblock %}
+
+{% block services %}
+service password-encryption
+{% endblock %}
+
+{% block ospf %}
+{{ super() }}
+{% for net in ospf %}
+ network {{ net.network }} area {{ net.area }}
+{% endfor%}
+{% endblock %}

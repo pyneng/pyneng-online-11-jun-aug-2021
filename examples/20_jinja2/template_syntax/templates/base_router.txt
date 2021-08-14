@@ -15,10 +15,12 @@ router ospf 1
  auto-cost reference-bandwidth 10000
 {% endblock %}
 !
+{% raw %}
 {% block bgp %}
 {% endblock %}
+{% endraw %}
 !
-{% block alias %}
+{% block alias required %}
 {% endblock %}
 !
 line con 0

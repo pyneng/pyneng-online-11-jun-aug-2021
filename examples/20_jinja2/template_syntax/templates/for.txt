@@ -1,0 +1,22 @@
+hostname {{ name }}
+{% set name_lower = name | lower %}
+
+interface Loopback0
+ description {{ name_lower }}
+{% if id is number %}
+ ip address 10.1.1.{{ id }} 255.255.255.255
+{% elif id is ip_address %}
+ ip address {{ id }} 255.255.255.255
+{% endif %}
+
+{% for vl, name in vlans | dictsort %}
+vlan {{ vl | add_zero }}
+ name {{ name }}
+{% endfor %}
+
+router ospf 1
+ auto-cost reference-bandwidth {{ ref_bw | default(10000, boolean=True) }}
+ {% for net in ospf %}
+ network {{ net['network'] }} area {{ net['area'] }}
+ {# network {{ net.network }} area {{ net.area }} #}
+ {% endfor %}

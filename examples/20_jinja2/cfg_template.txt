@@ -8,7 +8,7 @@ interface GigabitEthernet0/0
  description LAN to {{name}} sw1 {{int}}
  ip address {{ip}} 255.255.255.0
 !
-router ospf 10
+router ospf {{ process_id | default(100) }}
  router-id 10.255.{{id}}.1
  auto-cost reference-bandwidth 10000
  network 10.0.0.0 0.255.255.255 area 0

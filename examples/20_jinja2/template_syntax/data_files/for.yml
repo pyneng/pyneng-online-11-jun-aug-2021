@@ -1,7 +1,10 @@
+id: test
+name: R3
 vlans:
-  10: Marketing
-  20: Voice
-  30: Management
+  14: Marketing
+  12: Voice
+  10: Management
+ref_bw: false
 ospf:
   - network: 10.0.1.0 0.0.0.255
     area: 0
