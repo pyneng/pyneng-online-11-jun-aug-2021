@@ -13,6 +13,7 @@ Technical Support: http://www.cisco.com/techsupport
 
 Management address(es):
   IP address: 10.1.21.2
+  IP address: 10.1.121.2
 
 -------------------------
 Device ID: R1
@@ -51,3 +52,6 @@ advertisement version: 2
 VTP Management Domain: ''
 Duplex: full
 Management address(es):
+  IP address: 10.2.255.2
+
+Data

@@ -18,3 +18,8 @@ with open("traceroute.template") as f:
 
 print(fsm.header)
 print(result)
+
+
+# ['id', 'ip']
+# [['1', '10.0.12.1'], ['2', '15.0.0.5'], ['3', '57.0.0.7'], ['4', '79.0.0.9']]
+

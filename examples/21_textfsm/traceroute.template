@@ -1,5 +1,4 @@
-Value id (\d+)
 Value ip ([\d.]+)
 
 Start
-  ^ +${id} +${ip} +\d+ -> Record
+ ^ +\d+ +${ip} +\d+ -> Record

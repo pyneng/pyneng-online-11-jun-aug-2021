@@ -1,0 +1,21 @@
+Value Filldown l_hostname (\S+)
+Value Required n_hostname (\S+)
+Value n_ip (\S+)
+Value l_port (\S+)
+Value n_port (\S+)
+Value n_ios (\S+)
+Value List n_mgmnt_ip (\S+)
+
+Start
+ ^${l_hostname}[#>]sh
+ ^Device ID: ${n_hostname}
+ ^ +IP address: ${n_ip}
+ ^Interface: +${l_port}, .+: ${n_port}
+ ^Cisco IOS Software,.+, Version ${n_ios},
+ ^Management address -> MngmtIP
+ ^---- -> Record
+
+MngmtIP
+ ^ +IP address: ${n_mgmnt_ip}
+ ^.* -> Record Start
+
