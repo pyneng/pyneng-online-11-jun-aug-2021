@@ -7,52 +7,49 @@ class CiscoTelnet:
         self, ip, username, password, enable_password=None, disable_paging=True
     ):
         self.ip = ip
-        self.telnet = telnetlib.Telnet(ip)
-        self.telnet.read_until(b"Username:")
-        self.telnet.write(username.encode("ascii") + b"\n")
+        self.username = username
 
-        self.telnet.read_until(b"Password:")
-        self.telnet.write(password.encode("ascii") + b"\n")
+        self._telnet = telnetlib.Telnet(ip)
+        self._telnet.read_until(b"Username:")
+        self._telnet.write(username.encode("ascii") + b"\n")
+        self._telnet.read_until(b"Password:")
+        self._telnet.write(password.encode("ascii") + b"\n")
         if enable_password:
-            self.telnet.write(b"enable\n")
-            self.telnet.read_until(b"Password:")
-            self.telnet.write(enable_password.encode("ascii") + b"\n")
+            self._telnet.write(b"enable\n")
+            self._telnet.read_until(b"Password:")
+            self._telnet.write(enable_password.encode("ascii") + b"\n")
         if disable_paging:
-            self.telnet.write(b"terminal length 0\n")
+            self._telnet.write(b"terminal length 0\n")
         time.sleep(0.5)
-        self.telnet.read_very_eager()
+        self._telnet.read_very_eager()
 
     def send_show_command(self, command):
-        self.telnet.write(command.encode("ascii") + b"\n")
-        time.sleep(1)
-        output = self.telnet.read_very_eager().decode("ascii")
-        self.check_errors(output)
+        self._telnet.write(command.encode("utf-8") + b"\n")
+        output = self._telnet.read_until(b"#").decode("utf-8")
+        return output
+
+    def _read_until_prompt(self, prompt="#"):
+        return self._telnet.read_until(prompt.encode("utf-8")).decode("utf-8")
+
+    def send_config(self, commands):
+        if type(commands) == str:
+            commands = ["conf t", commands, "end"]
+        else:
+            commands = ["conf t", *commands, "end"]
+        output = ""
+        for cmd in commands:
+            self._telnet.write(cmd.encode("utf-8") + b"\n")
+            output += self._read_until_prompt()
         return output
 
     def close(self):
-        self.telnet.close()
+        self._telnet.close()
 
-    def check_errors(self, command_output):
-        if "Invalid input detected" in command_output:
-            raise ValueError("Возникла ошибка Invalid input detected")
+    def get_cfg(self, command="sh run"):
+        return self.send_show_command(command)
 
-    def config_mode(self):
-        self.telnet.write(b"conf t\n")
-        time.sleep(0.5)
-        return self.telnet.read_very_eager().decode("ascii")
 
-    def exit_config_mode(self):
-        self.telnet.write(b"end\n")
-        time.sleep(0.5)
-        return self.telnet.read_very_eager().decode("ascii")
-
-    def send_config_commands(self, commands):
-        # if type(commands) == str:
-        #    commands = [commands]
-        output = self.config_mode()
-        for command in commands:
-            self.telnet.write(command.encode("ascii") + b"\n")
-            time.sleep(0.2)
-        output += self.telnet.read_very_eager().decode("ascii")
-        output += self.exit_config_mode()
-        return output
+if __name__ == "__main__":
+    r1 = CiscoTelnet("192.168.100.1", "cisco", "cisco", "cisco")
+    r1.send_show_command("sh clock")
+    # CiscoTelnet.send_show_command(r1, "sh clock")

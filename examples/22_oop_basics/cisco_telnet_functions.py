@@ -2,6 +2,11 @@ import telnetlib
 import time
 
 
+def check_errors(command_output):
+    if "Invalid input detected" in command_output:
+        raise ValueError("Возникла ошибка Invalid input detected")
+
+
 def connect(ip, username, password, enable_password=None, disable_paging=True):
     telnet = telnetlib.Telnet(ip)
     telnet.read_until(b"Username:")
@@ -27,11 +32,6 @@ def send_show_command(connection, command):
     return output
 
 
-def check_errors(command_output):
-    if "Invalid input detected" in command_output:
-        raise ValueError("Возникла ошибка Invalid input detected")
-
-
 def send_config_commands(connection, commands):
     connection.write("conf t".encode("ascii") + b"\n")
     for command in commands:
@@ -46,3 +46,6 @@ if __name__ == "__main__":
     r1 = connect("192.168.100.1", "cisco", "cisco", "cisco")
     sh_ip_int_br = send_show_command(r1, "sh ip int br")
     print(sh_ip_int_br)
+    out = send_show_command(r1, "sh version")
+    print(out)
+    r1.close()
